@@ -1,8 +1,11 @@
-CC ?= gcc
-CFLAGS ?= -Wall -std=gnu99 -g3 -DDEBUG -O0
+CC = gcc
+CFLAGS = -Wall -std=gnu99 -g3 -DDEBUG -O3
 
-EXEC = pi matrix
+EXEC = pi matrix 
 GIT_HOOKS := .git/hooks/applied
+
+
+
 .PHONY: all
 all: $(GIT_HOOKS) $(EXEC)
 
@@ -12,16 +15,16 @@ $(GIT_HOOKS):
 
 SRCS_common = main.c
 
-pi: $(SRCS_common) $@.c
-	$(CC) $(CFLAGS_common) \
+pi: $(SRCS_common) pi.c
+	$(CC) $(CFLAGS) \
 		-o $@ -DPI -DHEADER="\"$@.h\"" \
 		$(SRCS_common) $@.c
 
-matrix: $(SRCS_common) $@.c
-	$(CC) $(CFLAGS_common) \
+matrix: $(SRCS_common) matrix.c
+	$(CC) $(CFLAGS)\
 		-o $@ -DMATRIX -DHEADER="\"$@.h\"" \
 		$(SRCS_common) $@.c
-
+ 
 cache-test: $(EXEC)
 	perf stat --repeat 5 \
 		-e cache-misses,cache-references,instructions,cycles \
